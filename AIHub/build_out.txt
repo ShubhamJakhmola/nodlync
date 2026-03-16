@@ -1,0 +1,13 @@
+﻿  Determining projects to restore...
+  All projects are up-to-date for restore.
+C:\Users\ShubhamJ\Downloads\AI STUFF\AIHub\ViewModels\PageViewModels.cs(71,17): error CS0103: The name 'AITokensLabel' does not exist in the current context [C:\Users\ShubhamJ\Downloads\AI STUFF\AIHub\AIHub_sz4yzyay_wpftmp.csproj]
+C:\Users\ShubhamJ\Downloads\AI STUFF\AIHub\ViewModels\PageViewModels.cs(72,17): error CS0103: The name 'AITokensSubLabel' does not exist in the current context [C:\Users\ShubhamJ\Downloads\AI STUFF\AIHub\AIHub_sz4yzyay_wpftmp.csproj]
+
+Build FAILED.
+
+C:\Users\ShubhamJ\Downloads\AI STUFF\AIHub\ViewModels\PageViewModels.cs(71,17): error CS0103: The name 'AITokensLabel' does not exist in the current context [C:\Users\ShubhamJ\Downloads\AI STUFF\AIHub\AIHub_sz4yzyay_wpftmp.csproj]
+C:\Users\ShubhamJ\Downloads\AI STUFF\AIHub\ViewModels\PageViewModels.cs(72,17): error CS0103: The name 'AITokensSubLabel' does not exist in the current context [C:\Users\ShubhamJ\Downloads\AI STUFF\AIHub\AIHub_sz4yzyay_wpftmp.csproj]
+    0 Warning(s)
+    2 Error(s)
+
+Time Elapsed 00:00:06.39

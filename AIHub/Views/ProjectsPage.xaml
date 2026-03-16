@@ -1,0 +1,173 @@
+<UserControl x:Class="AIHub.Views.ProjectsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:views="clr-namespace:AIHub.Views"
+             Background="{StaticResource BackgroundBrush}">
+    <Grid Margin="24">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="360"/>
+            <ColumnDefinition Width="24"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0"
+                Background="{StaticResource CardBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="16"
+                Padding="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Projects"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource TextBrush}"/>
+                        <TextBlock Text="Select a project to edit it in the detail panel."
+                                   FontSize="12"
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   Margin="0,4,0,0"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Top">
+                        <Button Content="Refresh"
+                                Command="{Binding RefreshProjectsCommand}"
+                                Style="{StaticResource OutlineButtonStyle}"
+                                FontSize="11"
+                                Padding="12,6"
+                                Margin="0,0,8,0"/>
+                        <Button Content="+ New Project"
+                                Command="{Binding CreateProjectCommand}"
+                                Click="NewProjectButton_Click"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                FontSize="11"
+                                Padding="12,6"/>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock Grid.Row="1"
+                           Text="Loading projects..."
+                           Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"
+                           Foreground="{StaticResource TextMutedBrush}"
+                           Margin="0,0,0,12"/>
+
+                <Grid Grid.Row="2">
+                    <TextBlock Text="No projects yet. Click New Project to create one."
+                               Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"
+                               Foreground="{StaticResource TextMutedBrush}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               Margin="12"/>
+
+                    <ListView x:Name="ProjectsListView"
+                              ItemsSource="{Binding Projects}"
+                              SelectedItem="{Binding SelectedProject, Mode=TwoWay}"
+                              SelectionChanged="ProjectsListView_SelectionChanged"
+                              SelectionMode="Single"
+                              Background="Transparent"
+                              BorderThickness="0"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              HorizontalContentAlignment="Stretch"
+                              Margin="0,4,0,0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0"
+                                            Padding="14"
+                                            CornerRadius="12"
+                                            BorderBrush="{StaticResource BorderBrush}"
+                                            BorderThickness="1">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="{StaticResource SidebarBrush}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected}" Value="True">
+                                                        <Setter Property="Background" Value="#14137FEC"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsMouseOver}" Value="True">
+                                                        <Setter Property="Background" Value="#0F334155"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Name}"
+                                                       FontWeight="Bold"
+                                                       FontSize="14"
+                                                       Foreground="{StaticResource TextBrush}"
+                                                       TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding DisplayStatus, StringFormat=Status: {0}}"
+                                                       Margin="0,8,0,0"
+                                                       FontSize="11"
+                                                       Foreground="{StaticResource PrimaryBrush}"
+                                                       TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding CreatedAt, StringFormat=Created: {0:MMM dd, yyyy}}"
+                                                       Margin="0,4,0,0"
+                                                       FontSize="11"
+                                                       Foreground="{StaticResource TextMutedBrush}"
+                                                       TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Button Grid.Column="1"
+                                            Content="Delete"
+                                            Margin="10,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding DataContext.DeleteProjectCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource OutlineButtonStyle}"
+                                            FontSize="11"
+                                            Padding="12,6"
+                                            Foreground="#d32f2f"
+                                            BorderBrush="#d32f2f"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ProjectListItem_PreviewMouseLeftButtonDown"/>
+                                <EventSetter Event="MouseDoubleClick" Handler="ProjectListItem_MouseDoubleClick"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Border Grid.Column="2"
+                Background="{StaticResource CardBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="16"
+                Padding="20">
+            <views:ProjectDetailView DataContext="{Binding EditorViewModel}" />
+        </Border>
+    </Grid>
+</UserControl>

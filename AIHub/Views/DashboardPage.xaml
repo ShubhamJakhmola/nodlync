@@ -1,0 +1,174 @@
+<UserControl x:Class="AIHub.Views.DashboardPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer Margin="24" VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+
+            <!-- Loading indicator -->
+            <Border Background="{StaticResource CardBrush}" CornerRadius="6" Padding="12" Margin="0,0,0,16"
+                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="⏳ " FontSize="14"/>
+                    <TextBlock Text="Loading dashboard data..." FontSize="13" Foreground="{StaticResource TextMutedBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Top Stats Grid -->
+            <Grid Margin="0,0,0,32">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0" Grid.ColumnSpan="4" Margin="0,0,0,16">
+                    <TextBlock Text="TODAY'S ACTIVITY" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}"/>
+                    <Button Content="↻ Refresh" Command="{Binding RefreshCommand}" FontSize="11" Foreground="{StaticResource PrimaryBrush}"
+                            Background="Transparent" BorderThickness="0" HorizontalAlignment="Right" Cursor="Hand"/>
+                </Grid>
+
+                <!-- Completed Tasks -->
+                <Border Grid.Row="1" Grid.Column="0" Background="{StaticResource CardBrush}" CornerRadius="12" Padding="20" Margin="0,0,16,0" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}">
+                    <StackPanel>
+                        <Grid>
+                            <TextBlock Text="Completed Tasks" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                            <TextBlock Text="{Binding CompletedTasksTrend}" FontSize="10" FontWeight="Bold" Foreground="{StaticResource GreenBrush}" HorizontalAlignment="Right"/>
+                        </Grid>
+                        <TextBlock Text="{Binding CompletedTasksCount}" FontSize="28" FontWeight="Bold" Margin="0,12,0,0" Foreground="{StaticResource TextBrush}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- AI Tokens -->
+                <Border Grid.Row="1" Grid.Column="1" Background="{StaticResource CardBrush}" CornerRadius="12" Padding="20" Margin="0,0,16,0" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}">
+                    <StackPanel>
+                        <Grid>
+                            <TextBlock Text="AI Tokens Used" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                            <TextBlock Text="{Binding TokensSubLabel}" FontSize="10" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" HorizontalAlignment="Right"/>
+                        </Grid>
+                        <TextBlock Text="{Binding TokensLabel}" FontSize="28" FontWeight="Bold" Margin="0,12,0,0" Foreground="{StaticResource TextBrush}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Meetings -->
+                <Border Grid.Row="1" Grid.Column="2" Background="{StaticResource CardBrush}" CornerRadius="12" Padding="20" Margin="0,0,16,0" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}">
+                    <StackPanel>
+                        <Grid>
+                            <TextBlock Text="Meetings" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                            <TextBlock Text="total" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" HorizontalAlignment="Right"/>
+                        </Grid>
+                        <TextBlock Text="{Binding UpcomingMeetingsCount}" FontSize="28" FontWeight="Bold" Margin="0,12,0,0" Foreground="{StaticResource TextBrush}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Active Projects -->
+                <Border Grid.Row="1" Grid.Column="3" Background="{StaticResource CardBrush}" CornerRadius="12" Padding="20" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}">
+                    <StackPanel>
+                        <Grid>
+                            <TextBlock Text="Active Projects" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                            <TextBlock Text="{Binding SystemStatus}" FontSize="10" FontWeight="Bold" Foreground="{StaticResource GreenBrush}" HorizontalAlignment="Right"/>
+                        </Grid>
+                        <TextBlock Text="{Binding ActiveProjectsCount}" FontSize="28" FontWeight="Bold" Margin="0,12,0,0" Foreground="{StaticResource TextBrush}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Middle split -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left side -->
+                <StackPanel Grid.Column="0" Margin="0,0,32,0">
+
+                    <!-- Upcoming Tasks -->
+                    <TextBlock Text="UPCOMING TASKS" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,16"/>
+                    <Border Background="{StaticResource CardBrush}" CornerRadius="12" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" Margin="0,0,0,32">
+                        <StackPanel>
+                            <!-- Empty state -->
+                            <TextBlock Text="No upcoming tasks — you're all caught up! 🎉"
+                                       Foreground="{StaticResource TextMutedBrush}" FontSize="13" Padding="20"
+                                       HorizontalAlignment="Center"
+                                       Visibility="{Binding UpcomingTasks.Count, Converter={StaticResource NullToVisibilityConverter}}"/>
+                            <ItemsControl ItemsSource="{Binding UpcomingTasks}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Padding="16,12" BorderThickness="0,0,0,1" BorderBrush="{StaticResource BorderBrush}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Border Grid.Column="0" Width="8" Height="8" CornerRadius="4" Background="Red" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding Title}" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}"/>
+                                                    <TextBlock Text="{Binding Priority}" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0"/>
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="2" Text="{Binding DueDate, StringFormat={}{0:MM/dd}}" FontSize="11" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Workflow Library -->
+                    <TextBlock Text="WORKFLOW LIBRARY" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,16"/>
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding RecentWorkflows}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{StaticResource CardBrush}" CornerRadius="8" Padding="12" Margin="0,0,0,10" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="🔗" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Title}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}"/>
+                                                <TextBlock Text="{Binding Description}" FontSize="10" Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Right side: AI Suggestions -->
+                <StackPanel Grid.Column="1">
+                    <Border Background="#102a46" CornerRadius="16" Padding="20" BorderThickness="1" BorderBrush="#1a4066" Margin="0,0,0,32">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                <TextBlock Text="✨" FontSize="16" Margin="0,0,8,0"/>
+                                <TextBlock Text="AI Suggestions" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextBrush}"/>
+                            </StackPanel>
+                            <Border Background="{StaticResource BackgroundBrush}" CornerRadius="12" Padding="16" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}">
+                                <StackPanel>
+                                    <TextBlock Text="Automate Daily Reports" FontSize="12" FontWeight="Bold" Margin="0,0,0,8" Foreground="{StaticResource TextBrush}"/>
+                                    <TextBlock Text="You have tasks with deadlines this week. Should I generate a status report?" FontSize="11" Foreground="{StaticResource TextMutedBrush}" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                                    <Button Content="Create Report"
+                                            Style="{StaticResource PrimaryButtonStyle}"
+                                            FontSize="11"
+                                            FontWeight="Bold"
+                                            Padding="12,8"
+                                            Command="{Binding GenerateDashboardReportCommand}"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

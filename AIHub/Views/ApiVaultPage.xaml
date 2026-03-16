@@ -1,0 +1,33 @@
+<UserControl x:Class="AIHub.Views.ApiVaultPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="24">
+        <Border Background="{StaticResource CardBrush}" CornerRadius="12" Padding="20" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}">
+            <StackPanel>
+                <Grid Margin="0,0,0,16">
+                    <TextBlock Text="SECURE API KEYS" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextBrush}"/>
+                    <Button Style="{StaticResource PrimaryButtonStyle}"
+                            HorizontalAlignment="Right"
+                            FontSize="12"
+                            Command="{Binding AddKeyCommand}"
+                            CommandParameter="sample-key-value">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="Segoe Fluent Icons" Text="&#xE72E;" Margin="0,0,8,0"/>
+                            <TextBlock Text="Add API Key"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+                <DataGrid ItemsSource="{Binding ApiKeys}" AutoGenerateColumns="False" Background="Transparent" Foreground="{StaticResource TextBrush}" RowBackground="Transparent" AlternatingRowBackground="{StaticResource SidebarBrush}" HeadersVisibility="Column" GridLinesVisibility="None" BorderThickness="0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150"/>
+                        <DataGridTextColumn Header="Tags" Binding="{Binding Tags}" Width="150"/>
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="200"/>
+                        <DataGridTextColumn Header="Key (Encrypted)" Binding="{Binding EncryptedKey}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <TextBlock Text="Keys are AES-encrypted before saving to the database." FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,16,0,0"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
+

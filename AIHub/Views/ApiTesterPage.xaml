@@ -1,0 +1,67 @@
+<UserControl x:Class="AIHub.Views.ApiTesterPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+            <StackPanel Orientation="Horizontal">
+                <ComboBox Width="100" Margin="0,0,8,0" Padding="8,6"
+                          SelectedItem="{Binding RequestMethod}">
+                    <ComboBoxItem Content="GET"/>
+                    <ComboBoxItem Content="POST"/>
+                    <ComboBoxItem Content="PUT"/>
+                    <ComboBoxItem Content="DELETE"/>
+                </ComboBox>
+                <TextBox Width="500"
+                         Padding="8,6"
+                         Text="{Binding RequestUrl}"
+                         VerticalContentAlignment="Center"
+                         Background="{StaticResource SidebarBrush}"
+                         Foreground="{StaticResource TextBrush}"
+                         BorderThickness="0"/>
+                <Button Content="Send"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Margin="8,0,0,0"
+                        Width="80"
+                        Command="{Binding SendRequestCommand}"/>
+                <Button Content="Paste CURL"
+                        Background="{StaticResource SidebarBrush}"
+                        Foreground="{StaticResource TextBrush}"
+                        Margin="8,0,0,0"
+                        Padding="12,6"
+                        BorderThickness="0"/>
+            </StackPanel>
+        </Grid>
+        
+        <!-- Request Body -->
+        <Border Grid.Row="1" Background="{StaticResource CardBrush}" CornerRadius="12" Padding="16" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}">
+            <StackPanel>
+                <TextBlock Text="REQUEST BODY (JSON)" FontSize="12" FontWeight="Bold" Margin="0,0,0,8"/>
+                <TextBox AcceptsReturn="True" TextWrapping="Wrap" FontFamily="Consolas" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderThickness="0" Padding="12" MinHeight="150"/>
+            </StackPanel>
+        </Border>
+
+        <GridSplitter Grid.Row="2" Height="8" HorizontalAlignment="Stretch" Background="Transparent"/>
+
+        <!-- Response Area -->
+        <Border Grid.Row="3" Background="{StaticResource CardBrush}" CornerRadius="12" Padding="16" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}">
+            <StackPanel>
+                <Grid Margin="0,0,0,8">
+                    <TextBlock Text="RESPONSE" FontSize="12" FontWeight="Bold"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding StatusCode}" Foreground="{StaticResource GreenBrush}" FontSize="12" FontWeight="Bold" Margin="0,0,16,0"/>
+                        <TextBlock Text="{Binding ResponseTime}" Foreground="{StaticResource TextMutedBrush}" FontSize="12"/>
+                    </StackPanel>
+                </Grid>
+                <TextBox AcceptsReturn="True" IsReadOnly="True" FontFamily="Consolas" Text="{Binding ResponseBody}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource GreenBrush}" BorderThickness="0" Padding="12" MinHeight="150"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
+

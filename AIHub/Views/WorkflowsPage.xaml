@@ -1,0 +1,54 @@
+<UserControl x:Class="AIHub.Views.WorkflowsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="24">
+        <Border Background="{StaticResource CardBrush}" CornerRadius="12" Padding="20" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}">
+            <StackPanel>
+                <Grid Margin="0,0,0,16">
+                    <TextBlock Text="WORKFLOW LIBRARY" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextBrush}"/>
+                    <Button Content="âž• Create Workflow"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            HorizontalAlignment="Right"
+                            FontSize="12"
+                            Command="{Binding AddWorkflowCommand}"/>
+                </Grid>
+                
+                <ItemsControl ItemsSource="{Binding Workflows}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="{StaticResource SidebarBrush}" CornerRadius="8" Padding="16" Margin="0,0,0,12" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="ðŸ”—" FontSize="20" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Description}" FontSize="12" Foreground="{StaticResource TextMutedBrush}" Margin="0,4,0,0"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                            <Border Background="{StaticResource BackgroundBrush}" CornerRadius="4" Padding="6,2">
+                                                <TextBlock Text="{Binding Category}" FontSize="10" Foreground="{StaticResource PrimaryBrush}"/>
+                                            </Border>
+                                            <Border Background="{StaticResource BackgroundBrush}" CornerRadius="4" Padding="6,2" Margin="8,0,0,0">
+                                                <TextBlock Text="ðŸ“Ž view script.js" FontSize="10" Foreground="{StaticResource TextMutedBrush}"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Button Grid.Column="2"
+                                            Content="Run"
+                                            Style="{StaticResource PrimaryButtonStyle}"
+                                            Width="60"
+                                            Command="{Binding DataContext.RunWorkflowCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
+
